@@ -14,6 +14,7 @@
 		184867C72048F68900ACE301 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 184867C62048F68900ACE301 /* main.m */; };
 		184867D12048F68900ACE301 /* ZhihuDailyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 184867D02048F68900ACE301 /* ZhihuDailyTests.m */; };
 		184867DC2048F68900ACE301 /* ZhihuDailyUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 184867DB2048F68900ACE301 /* ZhihuDailyUITests.m */; };
+		AF1B697D8252A757E971F053 /* libPods-ZhihuDaily.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8575D1C739F0DDA9AB511E98 /* libPods-ZhihuDaily.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,9 @@
 		184867D72048F68900ACE301 /* ZhihuDailyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZhihuDailyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		184867DB2048F68900ACE301 /* ZhihuDailyUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhihuDailyUITests.m; sourceTree = "<group>"; };
 		184867DD2048F68900ACE301 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		25022B243A28C717CCC65E6B /* Pods-ZhihuDaily.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhihuDaily.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZhihuDaily/Pods-ZhihuDaily.release.xcconfig"; sourceTree = "<group>"; };
+		8575D1C739F0DDA9AB511E98 /* libPods-ZhihuDaily.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZhihuDaily.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		891841C80C0FC85FBB9F3FC1 /* Pods-ZhihuDaily.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZhihuDaily.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZhihuDaily/Pods-ZhihuDaily.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF1B697D8252A757E971F053 /* libPods-ZhihuDaily.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +88,8 @@
 				184867CF2048F68900ACE301 /* ZhihuDailyTests */,
 				184867DA2048F68900ACE301 /* ZhihuDailyUITests */,
 				184867B52048F68900ACE301 /* Products */,
+				F73A379ADB325E1B8C75A991 /* Pods */,
+				53E492458F1849F97B627ED7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,6 +136,23 @@
 			path = ZhihuDailyUITests;
 			sourceTree = "<group>";
 		};
+		53E492458F1849F97B627ED7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8575D1C739F0DDA9AB511E98 /* libPods-ZhihuDaily.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F73A379ADB325E1B8C75A991 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				891841C80C0FC85FBB9F3FC1 /* Pods-ZhihuDaily.debug.xcconfig */,
+				25022B243A28C717CCC65E6B /* Pods-ZhihuDaily.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -136,9 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 184867E02048F68900ACE301 /* Build configuration list for PBXNativeTarget "ZhihuDaily" */;
 			buildPhases = (
+				0A658F4BBF8AFF74FBBDD449 /* [CP] Check Pods Manifest.lock */,
 				184867B02048F68900ACE301 /* Sources */,
 				184867B12048F68900ACE301 /* Frameworks */,
 				184867B22048F68900ACE301 /* Resources */,
+				79EBF93040CFB543B3ED2021 /* [CP] Embed Pods Frameworks */,
+				AED4FA6B022DE0A75428F59A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -255,6 +282,57 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0A658F4BBF8AFF74FBBDD449 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZhihuDaily-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		79EBF93040CFB543B3ED2021 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZhihuDaily/Pods-ZhihuDaily-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AED4FA6B022DE0A75428F59A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZhihuDaily/Pods-ZhihuDaily-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		184867B02048F68900ACE301 /* Sources */ = {
@@ -416,6 +494,7 @@
 		};
 		184867E12048F68900ACE301 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 891841C80C0FC85FBB9F3FC1 /* Pods-ZhihuDaily.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -430,6 +509,7 @@
 		};
 		184867E22048F68900ACE301 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25022B243A28C717CCC65E6B /* Pods-ZhihuDaily.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
