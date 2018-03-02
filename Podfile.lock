@@ -14,18 +14,24 @@ PODS:
   - AFNetworking/Serialization (3.2.0)
   - AFNetworking/UIKit (3.2.0):
     - AFNetworking/NSURLSession
+  - MJExtension (3.0.13)
+  - SDAutoLayout (2.2.0)
   - SDWebImage (4.3.2):
     - SDWebImage/Core (= 4.3.2)
   - SDWebImage/Core (4.3.2)
 
 DEPENDENCIES:
   - AFNetworking
+  - MJExtension
+  - SDAutoLayout
   - SDWebImage
 
 SPEC CHECKSUMS:
   AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
+  MJExtension: 5932755f451458eefa24239358817f8d291240c7
+  SDAutoLayout: c5509e77ae75735d9a39f7bc83dba6d3f75d49d8
   SDWebImage: 29bd3c0bc1f01e5eb59720847c64ad4c4ca1af5d
 
-PODFILE CHECKSUM: 66b60843269e89e7b0245e232661b5824f2edda4
+PODFILE CHECKSUM: c2ce5bd9376caef5c14ea253e12309936ff32233
 
 COCOAPODS: 1.4.0
