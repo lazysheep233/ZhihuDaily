@@ -26,6 +26,7 @@
         _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        //取消cell的分割线
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [_tableView registerClass:[HomeTableViewCell class] forCellReuseIdentifier:CELLID];
         
