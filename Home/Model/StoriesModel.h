@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface StoriesModel : NSObject
-@property (nonatomic,copy)NSString *title;
+@property (nonatomic,copy)NSMutableString *title;
 @property (nonatomic,copy)NSString *ga_prefix;
 @property (nonatomic,strong)NSArray *images;
 @property (nonatomic,assign)NSInteger type;
