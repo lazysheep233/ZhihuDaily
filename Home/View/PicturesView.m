@@ -65,14 +65,24 @@
     self.pagecontrol.currentPage = currentPage;
     //NSLog(@"currentpage:%d",currentPage);
 }
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    //当用户滚动时关闭计时器轮播
+    [self removeTimer];
+}
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    //用户滚动结束时调用 重新开启计时轮播
+    [self addTimer];
+}
 -(void)addTimer{
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(nextImage) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(nextImage) userInfo:nil repeats:YES];
     NSLog(@"");
 }
-
+-(void)removeTimer{
+    [self.timer invalidate];
+}
 -(void)nextImage{
     NSInteger page = (self.pagecontrol.currentPage + 1) % self.pagecontrol.numberOfPages;
-    NSLog(@"currentpage:%d",page);
+    //NSLog(@"currentpage:%ld",(long)page);
     CGFloat xOffset = page * self.width;
     [self.scrollView setContentOffset:CGPointMake(xOffset, 0) animated:YES];
 }
