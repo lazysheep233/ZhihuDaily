@@ -17,10 +17,17 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    /*
+     当我们第一次实现页面跳转时，发现使用没有实现想要的效果。
+     这是因为我们默认采用的mainstory启动，当换了viewcontroller启动时，navigationController为空。
+     所以需要在AppDelegate.m启动中添加：
+     */
     HomeViewController *rootVC = [[HomeViewController alloc]init];
+    UINavigationController *navCtrlr = [[UINavigationController alloc]initWithRootViewController:rootVC];
     self.window = [[UIWindow alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-    [self.window setRootViewController:rootVC];
+    [self.window setRootViewController:navCtrlr];
     [self.window makeKeyAndVisible];
+    navCtrlr.navigationBarHidden = YES;
     // Override point for customization after application launch.
     return YES;
 }

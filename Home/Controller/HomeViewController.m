@@ -7,10 +7,13 @@
 //
 
 #import "HomeViewController.h"
+#import "DetailViewController.h"
+
 #import "HomeTableViewCell.h"
 #import "LatestModel.h"
 #import "StoriesModel.h"
 #import "PicturesView.h"
+
 #define CELLID @"HomeCell"
 
 @interface HomeViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -109,7 +112,7 @@
 #pragma mark - 获取新闻数据
 -(void)getLatest{
     [[AFHTTPSessionManager manager] GET:@"https://news-at.zhihu.com/api/4/news/latest" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@",responseObject);
+        //NSLog(@"%@",responseObject);
         [LatestModel mj_setupObjectClassInArray:^NSDictionary *{
             return @{
                      @"stories":@"StoriesModel",
@@ -140,6 +143,14 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    //cell的点击事件
+    DetailViewController *detailVC = [[DetailViewController alloc]init];
+    detailVC.stroiesModel = self.datas[indexPath.row];
+    [self.navigationController pushViewController:detailVC animated:YES];
+    //NSLog(@"%ld",(long)indexPath.row);
+}
+
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     if ([keyPath isEqualToString:@"contentOffset"]) {
         CGFloat yOffset = self.tableView.contentOffset.y;
@@ -163,7 +174,7 @@
         }else{
             alpha =1;
         }
-        NSLog(@"yOffset:%f",yOffset);
+        //NSLog(@"yOffset:%f",yOffset);
         _headView.backgroundColor = [UIColor colorWithRed:23/255.0 green:150/255.0 blue:210/255.0 alpha:alpha];
 
     }
