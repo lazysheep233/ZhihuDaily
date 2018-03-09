@@ -9,12 +9,14 @@
 #import "DetailViewController.h"
 #import "NewsDetailModel.h"
 #import "SectionModel.h"
+#import "detailPictureView.h"
 
 @interface DetailViewController ()<UIWebViewDelegate,UIScrollViewDelegate>
 @property (nonatomic,strong)UIWebView *webView;
 @property (nonatomic,strong)UIView *headView;
 @property (nonatomic,strong)UILabel *titleLabel;
 @property (nonatomic,strong)UIButton *backBtn;
+@property (nonatomic,strong)detailPictureView *detailPictureView;
 
 @property (nonatomic,strong)NewsDetailModel *model;
 @end
@@ -27,8 +29,7 @@
         _webView.scrollView.delegate = self;
         _webView.backgroundColor = [UIColor whiteColor];
         
-        [_webView.scrollView addObserver:self forKeyPath:@"webViewOffset" options:NSKeyValueObservingOptionNew context:nil];
-        //[_webView.scrollView addObserver:self forKeyPath:@"webViewOffset" options:NSKeyValueObservingOptionNew context:nil];
+       [_webView.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
         
         _webView.frame = CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height);
         
@@ -40,7 +41,7 @@
     if (!_headView) {
         _headView = [UIView new];
         _headView.backgroundColor = [UIColor colorWithRed:23/255.0 green:150/255.0 blue:210/255.0 alpha:1];
-        _headView.frame = CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 56);
+        _headView.frame = CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 55);
         [_headView addSubview:self.backBtn];
         
         
@@ -49,6 +50,15 @@
     }
     
     return _headView;
+}
+
+-(detailPictureView *)detailPictureView{
+    if (!_detailPictureView) {
+        _detailPictureView=[[detailPictureView alloc]init];
+        _detailPictureView.frame = CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 220);
+        //_detailPictureView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    return _detailPictureView;
 }
 
 -(UIButton *)backBtn{
@@ -64,16 +74,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self.view addSubview:self.webView];
     [self getNewsDetailForId:self.stroiesModel.id];
-    
+    [self.view addSubview:self.detailPictureView];
     [self.view addSubview:self.headView];
+    
     // Do any additional setup after loading the view.
 }
 
 -(void)didBackButton:(UIButton *)btn{
     //返回首页
-    [self.navigationController popViewControllerAnimated:YES];
+    //返回pop前需要移除监听，在pop动画时，scroview或tableview被释放了，
+    //但是他们仍会将一些信息传递给代理（例如_webview.scroview的滚动），这时候就会导致访问了已释放的内存。从而引发坏内存访问？
+    [_webView.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    if ([NSThread isMainThread]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+    }
 }
 
 -(void)getNewsDetailForId:(NSInteger)ID{
@@ -98,27 +119,48 @@
 -(void)setModel:(NewsDetailModel *)model{
     _model = model;
     [self.webView loadHTMLString:model.HTML baseURL:nil];
+    [self.detailPictureView sd_setImageWithURL:[NSURL URLWithString:model.image]];
 }
 
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
-    if ([keyPath isEqualToString:@"webViewOffset"]) {
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    
+    if ([keyPath isEqualToString:@"contentOffset"]) {
         CGFloat yOffset = self.webView.scrollView.contentOffset.y;
-        NSLog(@"yOffset:%f",yOffset);
+        //NSLog(@"yOffset:%f",yOffset);
+        
+        NSLog(@"height:%f",self.detailPictureView.height);
+       
+        if (yOffset<-20) {
+            self.detailPictureView.height = 195 - yOffset;
+            CGRect frame = self.detailPictureView.frame;
+            frame.origin.y=0;
+            self.detailPictureView.frame = frame;
+        }else{
+            CGRect frame = self.detailPictureView.frame;
+            frame.origin.y = -20-yOffset;
+            self.detailPictureView.frame = frame;
+            
+        }
+        
         CGFloat alpha=1;
         int alphaStart=60;
+        
+        //实现详情页下滑 导航栏隐藏效果
         if (yOffset<alphaStart) {
             alpha=1;
         }else if (yOffset<165){
-            alpha = (yOffset - alphaStart)/(165-alphaStart);
+            alpha = 1-(yOffset - alphaStart)/(165-alphaStart);
         }else{
             alpha =0;
         }
-       
+        
         _headView.backgroundColor = [UIColor colorWithRed:23/255.0 green:150/255.0 blue:210/255.0 alpha:alpha];
         
     }
+    
 }
 
+ 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

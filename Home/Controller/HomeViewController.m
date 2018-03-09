@@ -191,7 +191,7 @@
 }
 
 -(void)didLeftMenuButton:(UIButton *)btn{
-    
+    //左侧菜单栏按钮点击事件
 }
 
 - (void)didReceiveMemoryWarning {
