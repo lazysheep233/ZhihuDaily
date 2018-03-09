@@ -12,6 +12,10 @@
 
 @interface DetailViewController ()<UIWebViewDelegate,UIScrollViewDelegate>
 @property (nonatomic,strong)UIWebView *webView;
+@property (nonatomic,strong)UIView *headView;
+@property (nonatomic,strong)UILabel *titleLabel;
+@property (nonatomic,strong)UIButton *backBtn;
+
 @property (nonatomic,strong)NewsDetailModel *model;
 @end
 
@@ -23,17 +27,53 @@
         _webView.scrollView.delegate = self;
         _webView.backgroundColor = [UIColor whiteColor];
         
-        _webView.frame = CGRectMake(0, 20, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height-20);
+        [_webView.scrollView addObserver:self forKeyPath:@"webViewOffset" options:NSKeyValueObservingOptionNew context:nil];
+        //[_webView.scrollView addObserver:self forKeyPath:@"webViewOffset" options:NSKeyValueObservingOptionNew context:nil];
+        
+        _webView.frame = CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height);
         
     }
     return _webView;
+}
+
+-(UIView *)headView{
+    if (!_headView) {
+        _headView = [UIView new];
+        _headView.backgroundColor = [UIColor colorWithRed:23/255.0 green:150/255.0 blue:210/255.0 alpha:1];
+        _headView.frame = CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 56);
+        [_headView addSubview:self.backBtn];
+        
+        
+        self.backBtn.sd_layout.topSpaceToView(_headView, 22).leftSpaceToView(_headView, 12).widthIs(25).heightIs(25);
+        
+    }
+    
+    return _headView;
+}
+
+-(UIButton *)backBtn{
+    if (!_backBtn) {
+        _backBtn = [[UIButton alloc]init];
+        [_backBtn addTarget:self action:@selector(didBackButton:) forControlEvents:(UIControlEventTouchUpInside)];
+        [_backBtn setImage:[UIImage imageNamed:@"back-1"] forState:UIControlStateNormal];
+        
+    }
+    
+    return _backBtn;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.webView];
     [self getNewsDetailForId:self.stroiesModel.id];
+    
+    [self.view addSubview:self.headView];
     // Do any additional setup after loading the view.
+}
+
+-(void)didBackButton:(UIButton *)btn{
+    //返回首页
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)getNewsDetailForId:(NSInteger)ID{
@@ -48,7 +88,7 @@
         }];
         NewsDetailModel *model = [NewsDetailModel mj_objectWithKeyValues:responseObject];
         model.HTML = [NSString stringWithFormat:@"<html><head><link rel=\"stylesheet\" href=%@></head><body>%@</body></html>",model.css[0],model.body];
-        //这里拼接的HTML文件中的CSS样式表为HTTP加载，需要设置允许HTTP链接
+        //这里拼接的HTML文件中 CSS外部加载样式表为HTTP加载，需要设置允许HTTP链接
         self.model = model;
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -58,6 +98,25 @@
 -(void)setModel:(NewsDetailModel *)model{
     _model = model;
     [self.webView loadHTMLString:model.HTML baseURL:nil];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
+    if ([keyPath isEqualToString:@"webViewOffset"]) {
+        CGFloat yOffset = self.webView.scrollView.contentOffset.y;
+        NSLog(@"yOffset:%f",yOffset);
+        CGFloat alpha=1;
+        int alphaStart=60;
+        if (yOffset<alphaStart) {
+            alpha=1;
+        }else if (yOffset<165){
+            alpha = (yOffset - alphaStart)/(165-alphaStart);
+        }else{
+            alpha =0;
+        }
+       
+        _headView.backgroundColor = [UIColor colorWithRed:23/255.0 green:150/255.0 blue:210/255.0 alpha:alpha];
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {

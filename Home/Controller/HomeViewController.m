@@ -87,8 +87,8 @@
         [_headView addSubview:self.leftBtn];
         [_headView addSubview:self.titleLabel];
         
-        self.leftBtn.sd_layout.topSpaceToView(_headView, 13).leftSpaceToView(_headView, 12).widthIs(30).heightIs(30);
-        self.titleLabel.sd_layout.centerXEqualToView(_headView).centerYEqualToView(_headView).widthIs(150).heightIs(30);
+        self.leftBtn.sd_layout.topSpaceToView(_headView, 20).leftSpaceToView(_headView, 12).widthIs(30).heightIs(30);
+        self.titleLabel.sd_layout.centerXEqualToView(_headView).topSpaceToView(_headView, 20).widthIs(150).heightIs(30);
     }
     
     return _headView;
